@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 # double underscore for the name of the module
 app = Flask(__name__)
 
@@ -6,11 +6,11 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/home")
 def hello():
-    return "<h1>It Works</h1>"
+    return render_template("home.html")
 
 @app.route("/about")
 def about():
-    return "<h1>About Page</h1>"
+    return render_template("about.html")
 
 if __name__ == "__main__":
     # restart the server
