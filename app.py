@@ -1,9 +1,11 @@
 from flask import Flask, render_template, url_for
+from forms import RegistrationForm, LoginForm
+
 # double underscore for the name of the module
 app = Flask(__name__)
 
 # secret key to protect against changing cookies and cross site request forgery attacks
-app.config["SECRET_KEY"] = ""
+app.config["SECRET_KEY"] = "d5bcb19fb808ef171f39f4a2a6c5c466"
 
 posts = [
     {
@@ -29,6 +31,18 @@ def hello():
 @app.route("/about")
 def about():
     return render_template("about.html", title = "About")
+
+@app.route("/register")
+def register():
+    # create instance of registration form
+    form = RegistrationForm()
+    return render_template("register.html", title = "Register", form = form)
+
+@app.route("/login")
+def login():
+    # create instance of login form
+    form = LoginForm()
+    return render_template("login.html", title = "Login", form = form)
 
 if __name__ == "__main__":
     # restart the server
