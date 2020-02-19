@@ -2,6 +2,9 @@ from flask import Flask, render_template, url_for
 # double underscore for the name of the module
 app = Flask(__name__)
 
+# secret key to protect against changing cookies and cross site request forgery attacks
+app.config["SECRET_KEY"] = ""
+
 posts = [
     {
         "author": "Bob Test",
