@@ -45,10 +45,19 @@ def register():
 
     return render_template("register.html", title = "Register", form = form)
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     # create instance of login form
     form = LoginForm()
+
+    if form.validate_on_submit():
+        # for testing
+        if form.email.data == "test@testing.com" and form.password.data == "123456":
+            flash(f"Welcome back!", "success")
+            return redirect(url_for("home"))
+        else:
+            flash(f"Login failed, please try again", "danger")
+
     return render_template("login.html", title = "Login", form = form)
 
 if __name__ == "__main__":
