@@ -39,7 +39,7 @@ def register():
     if form.validate_on_submit():
         # display a message on the client
         # secound arugment is the styles
-        flash(f"Account created for {form.username.data}! Welcome", "_success_")
+        flash(f"Account created for {form.username.data}! Welcome", "success")
         
         return redirect(url_for("home"))
 
