@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash
 from forms import RegistrationForm, LoginForm
 
 # double underscore for the name of the module
@@ -36,6 +36,11 @@ def about():
 def register():
     # create instance of registration form
     form = RegistrationForm()
+    if form.validate_on_submit():
+        # display a message on the client
+        # secound arugment is the styles
+        flash(f"Account created for {form.username.data}! Welcome", "_success_")
+
     return render_template("register.html", title = "Register", form = form)
 
 @app.route("/login")
