@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect
-from runnerblog import app
+from runnerblog import app, db, bcrypt
 from runnerblog.forms import RegistrationForm, LoginForm
 from runnerblog.models import User, Post
 
@@ -33,6 +33,10 @@ def register():
     # create instance of registration form
     form = RegistrationForm()
     if form.validate_on_submit():
+        # hash the user password
+        # decode() to change from bytes to string
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
+        
         # display a message on the client
         # secound arugment is the styles
         flash(f"Account created for {form.username.data}! Welcome", "success")
