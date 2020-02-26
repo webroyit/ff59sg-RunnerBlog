@@ -1,7 +1,15 @@
 from datetime import datetime
-from runnerblog import db
+from runnerblog import db, login_manager
+from flask_login import UserMixin
 
-class User(db.Model):
+# callback that load the user object by id stored in the session
+@login_manager.user_loader
+def load_user(user_id):
+    # get user by id from the database
+    return User.query.get(int(user_id))
+
+# UserMixin add the attributes and methods for session
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(20), unique = True, nullable = False)
     email = db.Column(db.String(120), unique = True, nullable = False)
