@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect
 from runnerblog import app, db, bcrypt
 from runnerblog.forms import RegistrationForm, LoginForm
 from runnerblog.models import User, Post
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, logout_user
 
 posts = [
     {
@@ -60,7 +60,7 @@ def login():
     # redirect to home page if the user is alread login
     if current_user.is_authenticated:
         return redirect(url_for("home"))
-        
+
     # create instance of login form
     form = LoginForm()
 
@@ -75,3 +75,9 @@ def login():
             flash(f"Login failed, please try again", "danger")
 
     return render_template("login.html", title = "Login", form = form)
+
+@app.route("/logout")
+def logout():
+    # logout the user
+    logout_user()
+    return redirect(url_for("home"))
