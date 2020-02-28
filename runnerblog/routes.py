@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from runnerblog import app, db, bcrypt
 from runnerblog.forms import RegistrationForm, LoginForm
 from runnerblog.models import User, Post
@@ -70,7 +70,14 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             # login the user
             login_user(user, remember = form.remember.data)
-            return redirect(url_for("home"))
+
+            # args is a dictionary(object)
+            # get() will return null if it empty
+            next_page = request.args.get("next")
+
+            # using ternary conditional
+            # redirect the user of the last page they visited or home page
+            return redirect(next_page) if next_page else redirect(url_for("home"))
         else:
             flash(f"Login failed, please try again", "danger")
 

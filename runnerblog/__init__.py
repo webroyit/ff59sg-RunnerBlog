@@ -19,4 +19,7 @@ login_manager = LoginManager(app)
 # redirect the user to the login page is they are not login
 login_manager.login_view = "login"
 
+# change the color of the flash message
+login_manager.login_message_category = "info"
+
 from runnerblog import routes
