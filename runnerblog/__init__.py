@@ -16,4 +16,7 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
+# redirect the user to the login page is they are not login
+login_manager.login_view = "login"
+
 from runnerblog import routes
