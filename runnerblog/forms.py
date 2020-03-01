@@ -50,7 +50,7 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError("Username aleady existed")
 
     def validate_email(self, email):
-        if username.email != current_user.username:
+        if email.data != current_user.username:
             user = User.query.filter_by(email = email.data).first()
 
             if user:
