@@ -1,5 +1,6 @@
 import os
 import secrets
+from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from runnerblog import app, db, bcrypt
 from runnerblog.forms import RegistrationForm, LoginForm, UpdateAccountForm
@@ -36,8 +37,13 @@ def save_picture(form_picture):
     # get the path for the new file to be saved
     picture_path = os.path.join(app.root_path, "static/profile_pics", picture_fn)
 
+    # resize the image
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+
     # save the image
-    form_picture.save(picture_path)
+    i.save(picture_path)
 
     return picture_fn
 
