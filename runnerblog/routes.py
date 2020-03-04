@@ -1,3 +1,5 @@
+import os
+import secrets
 from flask import render_template, url_for, flash, redirect, request
 from runnerblog import app, db, bcrypt
 from runnerblog.forms import RegistrationForm, LoginForm, UpdateAccountForm
@@ -18,6 +20,26 @@ posts = [
         "date_posted": "Feb 17, 2020"
     }
 ]
+
+# save the new image on the profile_pics
+def save_picture(form_picture):
+    # create a random string
+    random_hex = secrets.token_hex(8)
+
+    # get the file extension
+    # name the variable _ if it does not get used
+    _, f_ext = os.path.splitext(form_picture.filename)
+
+    # new file name
+    picture_fn = random_hex + f_ext
+
+    # get the path for the new file to be saved
+    picture_path = os.path.join(app.root_path, "static/profile_pics", picture_fn)
+
+    # save the image
+    form_picture.save(picture_path)
+
+    return picture_fn
 
 # you can add more endpoints to use the same function
 @app.route("/")
@@ -96,6 +118,9 @@ def account():
 
     # change user information
     if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+
         current_user.username = form.username.data
         current_user.email = form.email.data
 
