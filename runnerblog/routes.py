@@ -1,7 +1,7 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from runnerblog import app, db, bcrypt
 from runnerblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from runnerblog.models import User, Post
@@ -154,3 +154,16 @@ def post(post_id):
     # return the post or error page
     post = Post.query.get_or_404(post_id)
     return render_template("post.html", title = post.title, post = post)
+
+@app.route("/post/<int:post_id>/update")
+@login_required
+def update_post(post_id):
+     # return the post or error page
+    post = Post.query.get_or_404(post_id)
+
+    if post.author != current_user:
+        # 403 for forbidden route
+        abort(403)
+
+    form = PostForm()
+    return render_template("create_post.html", title = "Update Post", form = form)
