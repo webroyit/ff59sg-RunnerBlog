@@ -7,21 +7,6 @@ from runnerblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Pos
 from runnerblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
-posts = [
-    {
-        "author": "Bob Test",
-        "title": "First Time Running",
-        "content": "It was fun to run around",
-        "date_posted": "Feb 15, 2020"
-    },
-    {
-        "author": "Rob Run",
-        "title": "Running At the Park",
-        "content": "I enjoyed running at the park",
-        "date_posted": "Feb 17, 2020"
-    }
-]
-
 # save the new image on the profile_pics
 def save_picture(form_picture):
     # create a random string
@@ -51,6 +36,8 @@ def save_picture(form_picture):
 @app.route("/")
 @app.route("/home")
 def home():
+    # get all the posts from the database
+    posts = Post.query.all()
     return render_template("home.html", posts = posts)
 
 @app.route("/about")
