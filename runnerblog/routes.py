@@ -147,7 +147,7 @@ def new_post():
         flash("Post Created", "success")
         return redirect(url_for("home"))
 
-    return render_template("create_post.html", title = "New Post", form = form)
+    return render_template("create_post.html", title = "New Post", form = form, legend = "New Post")
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
@@ -155,7 +155,7 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template("post.html", title = post.title, post = post)
 
-@app.route("/post/<int:post_id>/update")
+@app.route("/post/<int:post_id>/update", methods=["GET", "POST"])
 @login_required
 def update_post(post_id):
      # return the post or error page
@@ -166,4 +166,20 @@ def update_post(post_id):
         abort(403)
 
     form = PostForm()
-    return render_template("create_post.html", title = "Update Post", form = form)
+    
+    # save the updated post to the database
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+
+        flash("Post is updated", "success")
+        return redirect(url_for("post", post_id = post.id))
+
+    # populate the post form with data
+    elif request.method == "GET":
+        form = PostForm()
+        form.title.data = post.title
+        form.content.data = post.content
+
+    return render_template("create_post.html", title = "Update Post", form = form, legend = "Update Post")
