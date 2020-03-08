@@ -183,3 +183,22 @@ def update_post(post_id):
         form.content.data = post.content
 
     return render_template("create_post.html", title = "Update Post", form = form, legend = "Update Post")
+
+@app.route("/post/<int:post_id>/delete", methods=["POST"])
+@login_required
+def delete_post(post_id):
+    # return the post or error page
+    post = Post.query.get_or_404(post_id)
+
+    if post.author != current_user:
+        # 403 for forbidden route
+        abort(403)
+    
+    # remove the post from the database
+    db.session.delete(post)
+
+    # save the changes
+    db.session.commit()
+
+    flash("Post is removed", "success")
+    return redirect(url_for("home"))
