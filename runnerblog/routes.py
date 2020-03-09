@@ -41,7 +41,8 @@ def home():
 
     # get some posts per page
     # per_page for number of post for each page
-    posts = Post.query.paginate(page = page, per_page = 5)
+    # order_by() to sort the data
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page = page, per_page = 5)
     
     return render_template("home.html", posts = posts)
 
