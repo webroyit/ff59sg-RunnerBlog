@@ -1,5 +1,6 @@
 from datetime import datetime
-from runnerblog import db, login_manager
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from runnerblog import db, login_manager, app
 from flask_login import UserMixin
 
 # callback that load the user object by id stored in the session
@@ -15,6 +16,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique = True, nullable = False)
     image_file = db.Column(db.String(20), nullable = False, default = "default.jpg")
     password = db.Column(db.String(60), nullable = False)
+
+    # create a token
+    def get_reset_token(self, expires_sec = 1800):
+        s = Serializer(app.config["SECRET_KEY"], expires_sec)
+        return s.dumps({ "user_id": self.id }).decode("utf-8")
 
     # adding one to many relationship
     # backref create a new column
