@@ -32,6 +32,9 @@ def save_picture(form_picture):
 
     return picture_fn
 
+def send_reset_email(user):
+    pass
+
 # you can add more endpoints to use the same function
 @app.route("/")
 @app.route("/home")
@@ -226,6 +229,15 @@ def reset_request():
         return redirect(url_for("home"))
 
     form = RequestResetForm()
+    
+    if form.validate_on_submit():
+        # find user data by email
+        user = User.query.filter_by(email = form.email.data).first()
+        
+        send_reset_email(user)
+
+        flash("Check your email for instructions to reset your password", "info")
+        return redirect(url_for("login"))
 
     return render_template("reset_request.html", title = "Forgot Password", form = form)
 
