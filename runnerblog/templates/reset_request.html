@@ -5,7 +5,7 @@
             <!-- hidden_tag() protect from  cross site request forgery attacks -->
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Forgot Password</legend>
+                <legend class="border-bottom mb-4">{{ title }}</legend>
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}

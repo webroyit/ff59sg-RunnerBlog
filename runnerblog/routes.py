@@ -241,4 +241,4 @@ def reset_token(token):
         return redirect(url_for("reset_request"))
 
     form = ResetPasswordForm()
-    return render_template("reset_password.html", title = "Forgot Password", form = form)
+    return render_template("reset_password.html", title = "Reset Password", form = form)
