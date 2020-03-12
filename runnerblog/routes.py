@@ -2,10 +2,11 @@ import os
 import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
-from runnerblog import app, db, bcrypt
+from runnerblog import app, db, bcrypt, mail
 from runnerblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, RequestResetForm, ResetPasswordForm
 from runnerblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_mail import Message
 
 # save the new image on the profile_pics
 def save_picture(form_picture):
@@ -32,8 +33,19 @@ def save_picture(form_picture):
 
     return picture_fn
 
+# email the user with a link to the reset password page
 def send_reset_email(user):
-    pass
+    token = user.get_reset_token()
+
+    # subject of the email
+    msg = Message("Password Reset Request from Runnerblog", sender = "roywebweb123@gmail.com", recipients = [user.email])
+    
+    # _external to get the full domain
+    msg.body = f'''Click on the following link to reset password:
+{url_for('reset_token', token = token, _external = True)}
+
+Ignore this email if you did not request password change.
+'''
 
 # you can add more endpoints to use the same function
 @app.route("/")
