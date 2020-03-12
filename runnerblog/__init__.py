@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 
 # double underscore for the name of the module
 app = Flask(__name__)
@@ -21,5 +22,10 @@ login_manager.login_view = "login"
 
 # change the color of the flash message
 login_manager.login_message_category = "info"
+
+# configure email
+app.config["MAIL_SERVER"] = "smtp.googlemail.com"
+app.config["MAIL_PORT"] = "587"
+app.config["MAIL_USE_TLS"] = "True"
 
 from runnerblog import routes
