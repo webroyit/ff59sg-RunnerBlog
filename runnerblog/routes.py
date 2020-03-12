@@ -46,6 +46,8 @@ def send_reset_email(user):
 
 Ignore this email if you did not request password change.
 '''
+    # send the email with the message
+    mail.send(msg)
 
 # you can add more endpoints to use the same function
 @app.route("/")
@@ -263,6 +265,8 @@ def reset_token(token):
     if user is None:
         flash("This token is invalid", "warning")
         return redirect(url_for("reset_request"))
+    
+    form = ResetPasswordForm()
     
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
