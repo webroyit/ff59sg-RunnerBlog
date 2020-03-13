@@ -1,3 +1,10 @@
+import os
+import secrets
+from PIL import Image
+from flask import url_for
+from runnerblog import app, mail
+from flask_mail import Message
+
 # save the new image on the profile_pics
 def save_picture(form_picture):
     # create a random string

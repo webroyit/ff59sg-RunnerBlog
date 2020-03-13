@@ -1,4 +1,5 @@
-from flask import Blueprint
+from flask import render_template, request, Blueprint
+from runnerblog.models import User, Post
 
 main = Blueprint("main", __name__)
 
