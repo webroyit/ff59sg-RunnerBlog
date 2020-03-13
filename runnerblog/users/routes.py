@@ -5,6 +5,7 @@ from runnerblog.models import User, Post
 from runnerblog.users.utils import save_picture, send_reset_email
 from flask_login import login_user, current_user, logout_user, login_required
 
+# export the routes
 users = Blueprint("users", __name__)
 
 @users.route("/register", methods=["GET", "POST"])

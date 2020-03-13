@@ -32,4 +32,11 @@ app.config["MAIL_USERNAME"] = EMAIL
 app.config["MAIL_PASSWORD"] = PASSWORD
 mail = Mail(app)
 
-from runnerblog import routes
+# access to these routes
+from runnerblog.users.routes import users
+from runnerblog.posts.routes import posts
+from runnerblog.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(posts)
+app.register_blueprint(main)
