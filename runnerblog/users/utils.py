@@ -39,7 +39,7 @@ def send_reset_email(user):
     
     # _external to get the full domain
     msg.body = f'''Click on the following link to reset password:
-{url_for('reset_token', token = token, _external = True)}
+{url_for('users.reset_token', token = token, _external = True)}
 
 Ignore this email if you did not request password change.
 '''

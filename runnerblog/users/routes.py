@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from runnerblog import db, bcrypt
-from runnerblog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, RequestResetForm, ResetPasswordForm
+from runnerblog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from runnerblog.models import User, Post
 from runnerblog.users.utils import save_picture, send_reset_email
 from flask_login import login_user, current_user, logout_user, login_required
@@ -12,7 +12,7 @@ users = Blueprint("users", __name__)
 def register():
     # redirect to home page if the user is alread login
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
 
     # create instance of registration form
     form = RegistrationForm()
@@ -30,7 +30,7 @@ def register():
         # secound arugment is the styles
         flash(f"Account created! Please login", "success")
         
-        return redirect(url_for("login"))
+        return redirect(url_for("users.login"))
 
     return render_template("register.html", title = "Register", form = form)
 
@@ -38,7 +38,7 @@ def register():
 def login():
     # redirect to home page if the user is alread login
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
 
     # create instance of login form
     form = LoginForm()
@@ -56,7 +56,7 @@ def login():
 
             # using ternary conditional
             # redirect the user of the last page they visited or home page
-            return redirect(next_page) if next_page else redirect(url_for("home"))
+            return redirect(next_page) if next_page else redirect(url_for("main.home"))
         else:
             flash(f"Login failed, please try again", "danger")
 
@@ -66,7 +66,7 @@ def login():
 def logout():
     # logout the user
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("main.home"))
 
 @users.route("/account", methods=["GET", "POST"])
 @login_required
@@ -88,7 +88,7 @@ def account():
         # flash message
         flash("Your account has been updated", "success")
 
-        return redirect(url_for("account"))
+        return redirect(url_for("users.account"))
 
     # prefill the account form data
     elif request.method == "GET":
@@ -112,7 +112,7 @@ def user_posts(username):
 @users.route("/forgot_password", methods=["GET", "POST"])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
 
     form = RequestResetForm()
     
@@ -123,20 +123,20 @@ def reset_request():
         send_reset_email(user)
 
         flash("Check your email for instructions to reset your password", "info")
-        return redirect(url_for("login"))
+        return redirect(url_for("users.login"))
 
     return render_template("reset_request.html", title = "Forgot Password", form = form)
 
 @users.route("/forgot_password/<token>", methods=["GET", "POST"])
 def reset_token(token):
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     
     user = User.verify_reset_token(token)
 
     if user is None:
         flash("This token is invalid", "warning")
-        return redirect(url_for("reset_request"))
+        return redirect(url_for("users.reset_request"))
     
     form = ResetPasswordForm()
     
@@ -147,7 +147,7 @@ def reset_token(token):
 
         flash(f"Your password has been updated", "success")
         
-        return redirect(url_for("login"))
+        return redirect(url_for("users.login"))
 
     form = ResetPasswordForm()
     return render_template("reset_password.html", title = "Reset Password", form = form)
