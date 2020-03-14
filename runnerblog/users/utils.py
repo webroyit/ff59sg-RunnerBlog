@@ -1,8 +1,8 @@
 import os
 import secrets
 from PIL import Image
-from flask import url_for
-from runnerblog import app, mail
+from flask import url_for, current_app
+from runnerblog import mail
 from flask_mail import Message
 
 # save the new image on the profile_pics
@@ -18,7 +18,7 @@ def save_picture(form_picture):
     picture_fn = random_hex + f_ext
 
     # get the path for the new file to be saved
-    picture_path = os.path.join(app.root_path, "static/profile_pics", picture_fn)
+    picture_path = os.path.join(current_app.root_path, "static/profile_pics", picture_fn)
 
     # resize the image
     output_size = (125, 125)

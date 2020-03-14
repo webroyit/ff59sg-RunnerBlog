@@ -1,6 +1,7 @@
+from flask import current_app
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from runnerblog import db, login_manager, app
+from runnerblog import db, login_manager
 from flask_login import UserMixin
 
 # callback that load the user object by id stored in the session
@@ -19,14 +20,14 @@ class User(db.Model, UserMixin):
 
     # create a token and encrypted the user id
     def get_reset_token(self, expires_sec = 1800):
-        s = Serializer(app.config["SECRET_KEY"], expires_sec)
+        s = Serializer(current_app.config["SECRET_KEY"], expires_sec)
         return s.dumps({ "user_id": self.id }).decode("utf-8")
 
     # verify the token and decrypted the user id
     # staticmethod when you do not include self in the argument
     @staticmethod
     def verify_reset_token(token):
-        s = Serializer(app.config["SECRET_KEY"])
+        s = Serializer(current_app.config["SECRET_KEY"])
 
         try:
             user_id = s.loads(token)["user_id"]
