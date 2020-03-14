@@ -3,9 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from runnerblog.config import Config
 
 # double underscore for the name of the module
 app = Flask(__name__)
+
+# use the variables from config.py
+app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
