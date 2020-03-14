@@ -2,4 +2,4 @@
 __pycache__
 site.db
 profile_pics
-runnerblog/config.py
+runnerblog/configEnv.py

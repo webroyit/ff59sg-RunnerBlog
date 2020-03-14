@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-from runnerblog.config import EMAIL, PASSWORD
+from runnerblog.configEnv import EMAIL, PASSWORD
 
 # double underscore for the name of the module
 app = Flask(__name__)
@@ -19,7 +19,7 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
 # redirect the user to the login page is they are not login
-login_manager.login_view = "login"
+login_manager.login_view = "users.login"
 
 # change the color of the flash message
 login_manager.login_message_category = "info"
