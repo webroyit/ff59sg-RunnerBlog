@@ -34,9 +34,11 @@ def create_app(config_class = Config):
     from runnerblog.users.routes import users
     from runnerblog.posts.routes import posts
     from runnerblog.main.routes import main
+    from runnerblog.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     return app
